@@ -1411,3 +1411,7 @@ a[class*=card]:hover .title {
   margin-right: 5px;
   display: block;
 }
+.btn .btn-light .btn-block .pay-btn {
+    background-color: darkblue;
+    color: white;
+}

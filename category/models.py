@@ -1,11 +1,14 @@
 from django.db import models
 from django.urls import reverse
+from django_cryptography.fields import encrypt
+
+from store.fields import SecureCharField, SecureTextField, SecureSlugField
 
 
 class Category(models.Model):
-    category_name = models.CharField(max_length=50, unique=True)
-    slug = models.SlugField(max_length=100, unique=True)
-    description = models.TextField(max_length=255, blank=True)
+    category_name = SecureCharField(max_length=50, unique=True)
+    slug = SecureSlugField(max_length=100, unique=True)
+    description = SecureTextField(max_length=255, blank=True)
     category_image = models.ImageField(upload_to='photos/categories/', blank=True)
 
     class Meta:

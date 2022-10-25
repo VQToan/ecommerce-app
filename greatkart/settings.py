@@ -1,18 +1,17 @@
+import os
 from pathlib import Path
-from django.contrib.messages import constants as messages
 
 import environ
-
+from django.contrib.messages import constants as messages
 
 env = environ.Env(
     DEBUG=(bool, False)
 )
 environ.Env.read_env()
 
-
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 
-SECRET_KEY = env("SECRET_KEY")
+SECRET_KEY = 'nt(o48x3+qoygx!*=$==ul!&^4nyr8c%ybpga1p^as##_3s3__'
 
 DEBUG = True
 
@@ -30,6 +29,8 @@ INSTALLED_APPS = [
     'carts',
     'accounts',
     'orders',
+    'payments',
+    'paypal.standard.ipn',
 ]
 
 MIDDLEWARE = [
@@ -64,17 +65,12 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'greatkart.wsgi.application'
 
-AUTH_USER_MODEL = 'accounts.Account'    # Tên model thay thế cho model user mặc định
-
+AUTH_USER_MODEL = 'accounts.Account'  # Tên model thay thế cho model user mặc định
 
 DATABASES = {
     'default': {
-        'ENGINE': env("DATABASE_ENGINE"),
-        'NAME': env("DATABASE_NAME"),
-        'USER': env("DATABASE_USER"),
-        'PASSWORD': env("DATABASE_PASSWORD"),
-        'HOST': env("DATABASE_HOST"),
-        'PORT': env("DATABASE_PORT"),
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
 
@@ -92,11 +88,6 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
-LANGUAGE_CODE = env("LANGUAGE_CODE")
-
-TIME_ZONE = env("TIME_ZONE")
-
 USE_I18N = True
 
 USE_L10N = True
@@ -121,9 +112,14 @@ MESSAGE_TAGS = {
     messages.DEBUG: 'secondary'
 }
 
-
-EMAIL_USE_TLS = True
-EMAIL_HOST = env("EMAIL_HOST")
-EMAIL_HOST_USER = env("EMAIL_HOST_USER")
-EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")
-EMAIL_PORT = env("EMAIL_PORT")
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+TIME_ZONE = 'Asia/Ho_Chi_Minh'
+LANGUAGE_CODE = 'vi'
+VNPAY_RETURN_URL = 'http://localhost:8000/payments/VNpayment_return'  # get from config
+VNPAY_PAYMENT_URL = 'https://sandbox.vnpayment.vn/paymentv2/vpcpay.html'  # get from config
+VNPAY_API_URL = 'https://sandbox.vnpayment.vn/merchant_webapi/merchant.html'
+VNPAY_TMN_CODE = '5GLQM2TS'  # Website ID in VNPAY System, get from config
+VNPAY_HASH_SECRET_KEY = 'MEEKSSJGWYVUQWICIRIMCELEPFRVKPGM'  # Secret key for create checksum,get from config
+PAYPAL_RECEIVER_EMAIL = 'XXXXX'
+PAYPAL_TEST = True
+MOMO_RETURN_URL = 'http://localhost:8000/payments/MoMo_payment_return'  # get from config

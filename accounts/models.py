@@ -1,6 +1,7 @@
 from django.core.checks.messages import Error
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+from store.fields import SecureCharField, SecureEmailField
 
 
 class MyAccountManager(BaseUserManager):
@@ -41,11 +42,11 @@ class MyAccountManager(BaseUserManager):
 
 
 class Account(AbstractBaseUser):
-    first_name = models.CharField(max_length=50)
-    last_name = models.CharField(max_length=50)
-    username = models.CharField(max_length=50, unique=True)
-    email = models.EmailField(max_length=100, unique=True)
-    phone_number = models.CharField(max_length=50)
+    first_name = SecureCharField(max_length=50)
+    last_name = SecureCharField(max_length=50)
+    username = SecureCharField(max_length=50, unique=True)
+    email = SecureEmailField(max_length=100, unique=True)
+    phone_number = SecureCharField(max_length=50)
 
     # required
     date_joined = models.DateTimeField(auto_now_add=True)
