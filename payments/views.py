@@ -58,7 +58,7 @@ def VNpayment(request):
 
             vnp.requestData['vnp_CreateDate'] = datetime.now().strftime('%Y%m%d%H%M%S')  # 20150410063022
             vnp.requestData['vnp_IpAddr'] = ipaddr
-            vnp.requestData['vnp_ReturnUrl'] = settings.VNPAY_RETURN_URL
+            vnp.requestData['vnp_ReturnUrl'] = request.build_absolute_uri(settings.VNPAY_RETURN_URL)
             vnpay_payment_url = vnp.get_payment_url(settings.VNPAY_PAYMENT_URL, settings.VNPAY_HASH_SECRET_KEY)
             return redirect(vnpay_payment_url)
         else:
@@ -306,9 +306,9 @@ def MoMo_payment(request):
             accessKey = "F8BBA842ECF85"
             secretKey = "K951B6PE1waDMi640xX08PD3vg6EkVlz"
             orderInfo = form.cleaned_data['order_desc']
-            redirectUrl = settings.MOMO_RETURN_URL
+            redirectUrl = request.build_absolute_uri(settings.MOMO_RETURN_URL)
             requestId = str(uuid.uuid4())
-            ipnUrl = settings.MOMO_RETURN_URL
+            ipnUrl = request.build_absolute_uri(settings.MOMO_RETURN_URL)
             requestType = "payWithMethod"
             extraData = ""
             # print(ipnUrl)

@@ -1,13 +1,8 @@
 import os
 from pathlib import Path
 
-import environ
 from django.contrib.messages import constants as messages
 
-env = environ.Env(
-    DEBUG=(bool, False)
-)
-environ.Env.read_env()
 
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 
@@ -15,7 +10,7 @@ SECRET_KEY = 'nt(o48x3+qoygx!*=$==ul!&^4nyr8c%ybpga1p^as##_3s3__'
 
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -48,7 +43,7 @@ ROOT_URLCONF = 'greatkart.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['templates'],
+        'DIRS': [os.path.join(BASE_DIR,'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -99,7 +94,9 @@ STATIC_ROOT = BASE_DIR / 'static'
 STATICFILES_DIRS = [
     'greatkart/static'
 ]
-
+TEMPLATE_DIRS = (
+    os.path.join(BASE_DIR, 'templates'),
+)
 # Cầu hình media file
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
@@ -115,11 +112,11 @@ MESSAGE_TAGS = {
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 TIME_ZONE = 'Asia/Ho_Chi_Minh'
 LANGUAGE_CODE = 'vi'
-VNPAY_RETURN_URL = 'http://localhost:8000/payments/VNpayment_return'  # get from config
+VNPAY_RETURN_URL = '/payments/VNpayment_return'  # get from config
 VNPAY_PAYMENT_URL = 'https://sandbox.vnpayment.vn/paymentv2/vpcpay.html'  # get from config
 VNPAY_API_URL = 'https://sandbox.vnpayment.vn/merchant_webapi/merchant.html'
 VNPAY_TMN_CODE = '5GLQM2TS'  # Website ID in VNPAY System, get from config
 VNPAY_HASH_SECRET_KEY = 'MEEKSSJGWYVUQWICIRIMCELEPFRVKPGM'  # Secret key for create checksum,get from config
 PAYPAL_RECEIVER_EMAIL = 'XXXXX'
 PAYPAL_TEST = True
-MOMO_RETURN_URL = 'http://localhost:8000/payments/MoMo_payment_return'  # get from config
+MOMO_RETURN_URL = '/payments/MoMo_payment_return'  # get from config
